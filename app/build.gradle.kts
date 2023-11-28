@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.noxusnotess"
-        minSdk = 22
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -36,7 +36,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.code.gson:gson:2.8.9") // Used for handling JSON - DK
+    implementation("androidx.room:room-runtime:2.6.0") // Used for SQLite to store note information
+    annotationProcessor("androidx.room:room-compiler:2.6.0") // Used for SQLite to store note information
     implementation("androidx.security:security-crypto:1.1.0-alpha06") // Used for handling cryptographic operations - DK
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
