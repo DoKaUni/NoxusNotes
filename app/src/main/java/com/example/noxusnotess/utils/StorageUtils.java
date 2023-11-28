@@ -3,7 +3,6 @@ package com.example.noxusnotess.utils;
 import android.content.Context;
 
 import com.example.noxusnotess.ui.Note;
-import com.google.gson.Gson;
 
 import java.io.FileWriter;
 import java.io.IOException;
