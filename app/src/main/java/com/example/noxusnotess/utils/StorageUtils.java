@@ -9,15 +9,25 @@ import com.example.noxusnotess.database.NoteDatabase;
 public class StorageUtils {
 
     public static void saveNote(Note note, String noteContent, Context context) {
-        // Replace whitespace with underscores in the note title
-        String sanitizedTitle = note.getTitle().replaceAll("\\s", "_");
+        note.setId(generateUniqueKey());
 
         // Save encrypted content to file
-        String encryptedFilePath = CryptoUtils.encryptData(noteContent, sanitizedTitle, context);
+        String encryptedFilePath = CryptoUtils.encryptData(noteContent, String.valueOf(note.getId()), context);
         note.setEncryptedFilePath(encryptedFilePath);
 
         // Save other note information to database asynchronously
         new SaveNoteTask(context).execute(note);
+    }
+
+    public static int generateUniqueKey() {
+        // Get the current timestamp
+        long timestamp = System.currentTimeMillis();
+
+        // Generate a random number
+        int random = (int) (Math.random() * 1000000);
+
+        // Combine timestamp and random number to create a unique key
+        return (int) (timestamp + random);
     }
 
     private static class SaveNoteTask extends AsyncTask<Note, Void, Void> {
