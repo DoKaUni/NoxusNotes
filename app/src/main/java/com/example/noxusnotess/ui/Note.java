@@ -3,17 +3,21 @@ package com.example.noxusnotess.ui;
 import java.text.DateFormat;
 import java.util.Date;
 
-// Class made for individual notes and their attributes with functions to get those attributes - DK
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Note {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
     private String title;
-    private String content;
     private String createdDate;
     private String modifiedDate;
     private String encryptedFilePath;
 
-    public Note(String title, String content) {
+    public Note(String title) {
         this.title = title;
-        this.content = content;
 
         Date currentDate = new Date();
         DateFormat dateFormat = DateFormat.getDateInstance();
@@ -21,6 +25,14 @@ public class Note {
 
         this.createdDate = formattedDate;
         this.modifiedDate = formattedDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     // Getter for title
@@ -31,16 +43,6 @@ public class Note {
     // Setter for title
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    // Getter for content
-    public String getContent() {
-        return content;
-    }
-
-    // Setter for content
-    public void setContent(String content) {
-        this.content = content;
     }
 
     // Getter for createdDate

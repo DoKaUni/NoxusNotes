@@ -35,8 +35,8 @@ public class AddNoteActivity extends AppCompatActivity {
         String content = editTextNoteContent.getText().toString();
 
         // Create a new Note object
-        Note newNote = new Note(title, content);
-        StorageUtils.saveNote(newNote, this);
+        Note newNote = new Note(title);
+        StorageUtils.saveNote(newNote, content, this);
 
         // For now, you can store the notes in a List in memory
         // In a real app, you would store them in a database or other persistent storage
