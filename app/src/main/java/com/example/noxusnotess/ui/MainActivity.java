@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noxusnotess.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoadNotesAsync.AsyncResponse<LiveData<List<Note>>> {
+public class MainActivity extends AppCompatActivity implements LoadNotesAsync.AsyncResponse<LiveData<List<Note>>>, NoteAdapter.OnItemClickListener {
 
     private NoteAdapter noteAdapter;
 
@@ -39,17 +40,29 @@ public class MainActivity extends AppCompatActivity implements LoadNotesAsync.As
 
     @Override
     public void onAsyncTaskComplete(LiveData<List<Note>> notesLiveData) {
+        // Initialize the RecyclerView adapter with an empty list
+        noteAdapter = new NoteAdapter(new ArrayList<>(), this);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewNotes);
+        recyclerView.setAdapter(noteAdapter);
+
         // Observe changes in notes LiveData
         notesLiveData.observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(List<Note> notes) {
-                // Initialize the RecyclerView adapter with the loaded notes
-                noteAdapter = new NoteAdapter(notes);
-                RecyclerView recyclerView = findViewById(R.id.recyclerViewNotes);
-                recyclerView.setAdapter(noteAdapter);
+                // Update the RecyclerView adapter when the list changes
+                noteAdapter.updateNotes(notes);
             }
         });
     }
+
+    @Override
+    public void onItemClick(Note note) {
+        Intent intent = new Intent(this, AddNoteActivity.class);
+        intent.putExtra("selectedNote", note);
+        startActivity(intent);
+    }
 }
+
 
 

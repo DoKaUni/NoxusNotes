@@ -9,14 +9,20 @@ import com.example.noxusnotess.database.NoteDatabase;
 public class StorageUtils {
 
     public static void saveNote(Note note, String noteContent, Context context) {
-        note.setId(generateUniqueKey());
+        boolean newNote = false;
+
+        if(note.getId() == 0) {
+            note.setId(generateUniqueKey());
+            newNote = true;
+        }
 
         // Save encrypted content to file
         String encryptedFilePath = CryptoUtils.encryptData(noteContent, String.valueOf(note.getId()), context);
         note.setEncryptedFilePath(encryptedFilePath);
 
         // Save other note information to database asynchronously
-        new SaveNoteTask(context).execute(note);
+        if(newNote)
+            new SaveNoteTask(context).execute(note);
     }
 
     public static int generateUniqueKey() {

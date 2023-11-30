@@ -17,6 +17,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
     private EditText editTextNoteTitle;
     private EditText editTextNoteContent;
+    private Note existingNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +26,17 @@ public class AddNoteActivity extends AppCompatActivity {
 
         editTextNoteTitle = findViewById(R.id.editTextNoteTitle);
         editTextNoteContent = findViewById(R.id.editTextNoteContent);
-
         Button buttonSaveNote = findViewById(R.id.buttonSaveNote);
-        buttonSaveNote.setOnClickListener(v -> saveNote());
+
+        existingNote = getIntent().getParcelableExtra("selectedNote");
+        if (existingNote != null) {
+            // Populate the fields with existing note data
+            editTextNoteTitle.setText(existingNote.getTitle());
+            editTextNoteContent.setText(CryptoUtils.decryptData(existingNote.getEncryptedFilePath(), this));
+
+            buttonSaveNote.setOnClickListener(v -> saveEditedNote());
+        }else
+            buttonSaveNote.setOnClickListener(v -> saveNote());
     }
 
     private void saveNote() {
@@ -38,15 +47,17 @@ public class AddNoteActivity extends AppCompatActivity {
         Note newNote = new Note(title);
         StorageUtils.saveNote(newNote, content, this);
 
-        // For now, you can store the notes in a List in memory
-        // In a real app, you would store them in a database or other persistent storage
-        // For simplicity, we will use a List for demonstration purposes.
-        // You may want to explore Room database for more complex scenarios.
+        finish();
+    }
 
-        // TODO: Add the newNote to your list of notes (which could be a ViewModel or another appropriate component).
+    private void saveEditedNote(){
+        String title = editTextNoteTitle.getText().toString();
+        String content = editTextNoteContent.getText().toString();
 
-        // Optionally, you can navigate back to the main activity or perform other actions.
-        // For now, we will just finish the activity.
+        existingNote.setTitle(title);
+        existingNote.setModifiedDate(existingNote.getCurrentDate());
+        StorageUtils.saveNote(existingNote, content, this);
+
         finish();
     }
 }
