@@ -16,6 +16,8 @@ import com.example.noxusnotess.R;
 import com.example.noxusnotess.utils.CryptoUtils;
 import com.example.noxusnotess.utils.StorageUtils;
 
+import java.io.File;
+
 public class AddNoteActivity extends AppCompatActivity {
 
     private AppCompatEditText editTextNoteTitle;
@@ -93,14 +95,16 @@ public class AddNoteActivity extends AppCompatActivity {
 
         Note newNote = new Note(title);
 
-        showPasswordDialog();
-        if (isPasswordLocked) {
-            newNote.setPasswordLocked(true);
-            newNote.setHashedPassword(CryptoUtils.hashPassword(password));
-        }
+        // Show the password dialog and wait for the result
+        showPasswordDialog(isPasswordLocked -> {
+            if (isPasswordLocked) {
+                newNote.setPasswordLocked(true);
+                newNote.setHashedPassword(CryptoUtils.hashPassword(password));
+            }
 
-        StorageUtils.saveNote(newNote, content, this);
-        finish();
+            StorageUtils.saveNote(newNote, content, this);
+            finish();
+        });
     }
 
     private void saveEditedNote() {
@@ -134,22 +138,24 @@ public class AddNoteActivity extends AppCompatActivity {
         highlightSelectedText();
     }
 
-    public void showPasswordDialog() {
+    private void showPasswordDialog(PasswordDialogCallback callback) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Set Password")
                 .setMessage("Do you want to set a password for this note?")
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    showEnterPasswordDialog();
+                    showEnterPasswordDialog(callback);
                 })
                 .setNegativeButton("No", (dialog, which) -> {
                     dialog.dismiss();
+                    callback.onPasswordResult(false);
                 });
 
-        passwordDialog = builder.create(); // Assign the created dialog to the class variable
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
-    private void showEnterPasswordDialog() {
+    private void showEnterPasswordDialog(PasswordDialogCallback callback) {
         // Use a custom layout for the dialog
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_enter_password, null);
 
@@ -162,13 +168,21 @@ public class AddNoteActivity extends AppCompatActivity {
                     // Retrieve the entered password
                     password = editTextPassword.getText().toString();
                     isPasswordLocked = true;
+                    dialog.dismiss();  // Dismiss the dialog before finishing the activity
+                    callback.onPasswordResult(true);
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {
                     // User canceled, don't set a password
                     dialog.dismiss();
+                    callback.onPasswordResult(false);
                 });
 
-        passwordDialog = builder.create(); // Assign the created dialog to the class variable
-        passwordDialog.show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    // Define a callback interface
+    interface PasswordDialogCallback {
+        void onPasswordResult(boolean isPasswordLocked);
     }
 }
