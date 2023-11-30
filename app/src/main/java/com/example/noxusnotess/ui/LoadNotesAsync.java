@@ -30,7 +30,15 @@ public class LoadNotesAsync extends AsyncTask<Void, Void, LiveData<List<Note>>> 
         NoteDAO noteDAO = noteDatabase.noteDAO();
 
         // Use the appropriate query based on loadDeletedNotes
-        return loadDeletedNotes ? noteDAO.getDeletedNotesSortedByName() : noteDAO.getAllActiveNotesSortedByName();
+        LiveData<List<Note>> notesLiveData = loadDeletedNotes ? noteDAO.getDeletedNotesSortedByName() : noteDAO.getAllActiveNotesSortedByName();
+
+        // Check and delete expired notes if loadDeletedNotes is true
+        if (loadDeletedNotes) {
+            int deleteAfterDays = 1;
+            noteDAO.deleteExpiredNotes(deleteAfterDays);
+        }
+
+        return notesLiveData;
     }
 
     @Override
@@ -40,6 +48,8 @@ public class LoadNotesAsync extends AsyncTask<Void, Void, LiveData<List<Note>>> 
         }
     }
 }
+
+
 
 
 

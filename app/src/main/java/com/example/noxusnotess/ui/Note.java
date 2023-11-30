@@ -9,6 +9,8 @@ import androidx.room.PrimaryKey;
 import java.text.DateFormat;
 import java.util.Date;
 
+import com.example.noxusnotess.utils.CryptoUtils;
+
 @Entity
 public class Note implements Parcelable {
 
@@ -19,7 +21,9 @@ public class Note implements Parcelable {
     private boolean deleted;
     private String createdDate;
     private String modifiedDate;
+    private String hashedPassword;
     private String encryptedFilePath;
+    private boolean isPasswordLocked;
 
     public Note(String title) {
         this.title = title;
@@ -34,6 +38,8 @@ public class Note implements Parcelable {
         createdDate = in.readString();
         modifiedDate = in.readString();
         encryptedFilePath = in.readString();
+        isPasswordLocked = in.readByte() != 0;
+        hashedPassword = in.readString();
     }
 
     public static final Creator<Note> CREATOR = new Creator<Note>() {
@@ -47,7 +53,6 @@ public class Note implements Parcelable {
             return new Note[size];
         }
     };
-
     public int getId() {
         return id;
     }
@@ -92,9 +97,16 @@ public class Note implements Parcelable {
         return encryptedFilePath;
     }
 
-    public void setEncryptedFilePath(String encryptedFilePath) {
-        this.encryptedFilePath = encryptedFilePath;
-    }
+    public void setEncryptedFilePath(String encryptedFilePath) {this.encryptedFilePath = encryptedFilePath;}
+
+    public void setPasswordLocked(boolean isPasswordLocked){this.isPasswordLocked = isPasswordLocked;}
+
+
+    public boolean isPasswordLocked(){return isPasswordLocked;}
+
+    public void setHashedPassword(String hashedPassword){this.hashedPassword = hashedPassword;}
+
+    public String getHashedPassword(){return hashedPassword;}
 
     public String getCurrentDate() {
         Date currentDate = new Date();
@@ -114,6 +126,8 @@ public class Note implements Parcelable {
         dest.writeString(createdDate);
         dest.writeString(modifiedDate);
         dest.writeString(encryptedFilePath);
+        dest.writeByte((byte) (isPasswordLocked ? 1 : 0)); // Write boolean value
+        dest.writeString(hashedPassword);
     }
 }
 

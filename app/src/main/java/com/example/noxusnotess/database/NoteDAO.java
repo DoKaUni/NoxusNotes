@@ -28,7 +28,7 @@ public interface NoteDAO {
     @Delete
     void delete(Note note);
 
-    @Query("DELETE FROM Note WHERE deleted = 1 AND strftime('%s', 'now') - strftime('%s', modifiedDate) > :deleteAfterSeconds")
-    void deleteExpiredNotes(long deleteAfterSeconds);
+    @Query("DELETE FROM Note WHERE deleted = 1 AND strftime('%s', 'now') - strftime('%s', modifiedDate) > :deleteAfterDays * 24 * 60 * 60")
+    void deleteExpiredNotes(int deleteAfterDays);
 }
 

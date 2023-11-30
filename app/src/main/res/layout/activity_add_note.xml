@@ -23,25 +23,31 @@
         android:isScrollContainer="true"/>
 
     <LinearLayout
+        android:id="@+id/buttons_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/buttonSaveNote"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
             android:text="Save Note" />
 
         <Button
             android:id="@+id/buttonDeleteNote"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
             android:text="Delete Note" />
-    </LinearLayout>
 
+        <Button
+            android:id="@+id/buttonHighlightText"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Highlight Text" />
+    </LinearLayout>
 </LinearLayout>

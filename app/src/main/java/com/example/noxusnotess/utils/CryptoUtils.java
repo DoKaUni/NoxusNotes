@@ -11,12 +11,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
@@ -24,7 +24,7 @@ public class CryptoUtils {
 
     private static final String TAG = CryptoUtils.class.getSimpleName();
 
-    public CryptoUtils() throws NoSuchPaddingException, NoSuchAlgorithmException {
+    public CryptoUtils() {
     }
 
     public static String encryptData(String data, String fileName, Context context) {
@@ -169,5 +169,24 @@ public class CryptoUtils {
         keyStore.load(null);
 
         return (SecretKey) keyStore.getKey(masterKeyAlias, null);
+    }
+
+    public static String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null; // Handle the error appropriately in your app
+        }
     }
 }
