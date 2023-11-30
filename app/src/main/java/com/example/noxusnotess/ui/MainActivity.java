@@ -29,11 +29,17 @@ public class MainActivity extends AppCompatActivity implements LoadNotesAsync.As
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Execute the AsyncTask to load notes in the background
-        new LoadNotesAsync(this, this).execute();
+        new LoadNotesAsync(this, this, false).execute();
 
         Button buttonAddNote = findViewById(R.id.buttonAddNote);
         buttonAddNote.setOnClickListener(view -> {
             Intent intent = new Intent(view.getContext(), AddNoteActivity.class);
+            view.getContext().startActivity(intent);
+        });
+
+        Button buttonTrashCan = findViewById(R.id.buttonTrashCan);
+        buttonTrashCan.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), TrashCanActivity.class);
             view.getContext().startActivity(intent);
         });
     }
@@ -47,12 +53,9 @@ public class MainActivity extends AppCompatActivity implements LoadNotesAsync.As
         recyclerView.setAdapter(noteAdapter);
 
         // Observe changes in notes LiveData
-        notesLiveData.observe(this, new Observer<List<Note>>() {
-            @Override
-            public void onChanged(List<Note> notes) {
-                // Update the RecyclerView adapter when the list changes
-                noteAdapter.updateNotes(notes);
-            }
+        notesLiveData.observe(this, notes -> {
+            // Update the RecyclerView adapter when the list changes
+            noteAdapter.updateNotes(notes);
         });
     }
 

@@ -21,9 +21,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         void onItemClick(Note note);
     }
 
-    public NoteAdapter(List<Note> notes, OnItemClickListener OnItemClickListener) {
+    public NoteAdapter(List<Note> notes, OnItemClickListener onItemClickListener) {
         this.noteList = notes;
-        this.onItemClickListener = OnItemClickListener;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull

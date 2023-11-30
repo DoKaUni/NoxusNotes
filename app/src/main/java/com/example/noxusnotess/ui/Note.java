@@ -16,12 +16,14 @@ public class Note implements Parcelable {
     private int id;
 
     private String title;
+    private boolean deleted;
     private String createdDate;
     private String modifiedDate;
     private String encryptedFilePath;
 
     public Note(String title) {
         this.title = title;
+        this.deleted = false;
         this.createdDate = getCurrentDate();
         this.modifiedDate = createdDate;
     }
@@ -60,6 +62,14 @@ public class Note implements Parcelable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public String getCreatedDate() {

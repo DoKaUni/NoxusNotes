@@ -21,7 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.AddNoteActivity"></activity>
+        <activity android:name=".ui.AddNoteActivity" />
+        <activity android:name=".ui.TrashCanActivity" />
     </application>
 
 </manifest>

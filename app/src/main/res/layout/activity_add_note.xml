@@ -22,11 +22,26 @@
         android:inputType="textMultiLine"
         android:isScrollContainer="true"/>
 
-    <Button
-        android:id="@+id/buttonSaveNote"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:text="Save Note"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonSaveNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Save Note" />
+
+        <Button
+            android:id="@+id/buttonDeleteNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Delete Note" />
+    </LinearLayout>
+
 </LinearLayout>
