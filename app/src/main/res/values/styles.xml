@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">#575757</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="colorButtonNormal">#c51212</item>
+        <item name="colorControlHighlight">#c51212</item>
+        <item name="editTextStyle">@style/EditTextStyle</item>
+    </style>
+
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">#c51212</item>
+    </style>
+
+    <style name="RecyclerViewItemText" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+</resources>

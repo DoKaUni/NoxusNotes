@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context="ui.AddNoteActivity">
@@ -32,22 +33,28 @@
         <Button
             android:id="@+id/buttonSaveNote"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/save_note" />
+            android:layout_weight="1"
+            android:text="@string/save_note"
+            app:icon="@android:drawable/ic_menu_save"
+            app:iconSize="22dp" />
 
         <Button
             android:id="@+id/buttonDeleteNote"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/delete_note" />
+            android:text="@string/delete_note"
+            app:icon="@android:drawable/ic_menu_delete"
+            app:iconSize="22dp" />
 
         <Button
             android:id="@+id/buttonHighlightText"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/highlight_text" />
+            android:text="Mark Text"
+            app:icon="@android:drawable/ic_menu_edit"
+            app:iconSize="22dp"/>
     </LinearLayout>
 </LinearLayout>

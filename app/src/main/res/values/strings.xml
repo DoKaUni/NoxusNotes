@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NoxusNotess</string>
+    <string name="app_name">NoxusNotes</string>
     <string name="save_note">Save Note</string>
     <string name="delete_note">Delete Note</string>
     <string name="highlight_text">Highlight Text</string>
