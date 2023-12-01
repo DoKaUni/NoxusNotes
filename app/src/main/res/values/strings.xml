@@ -9,4 +9,7 @@
     <string name="dialog_enter_password">Enter your password</string>
     <string name="dialog_enter_password_cancel">Cancel</string>
     <string name="dialog_enter_password_enter">Enter</string>
+    <string name="dialog_trashcan">Do you want to restore or delete this note?</string>
+    <string name="dialog_trashcan_restore">Restore</string>
+    <string name="dialog_trashcan_delete">Delete</string>
 </resources>

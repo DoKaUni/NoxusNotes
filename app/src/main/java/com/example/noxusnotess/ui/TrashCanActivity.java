@@ -1,10 +1,12 @@
 package com.example.noxusnotess.ui;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,27 +56,34 @@ public class TrashCanActivity extends AppCompatActivity implements LoadNotesAsyn
 
     @Override
     public void onItemClick(Note note) {
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_trashcan, null);
+
+        Button buttonRestore = dialogView.findViewById(R.id.buttonRestore);
+        Button buttonDelete = dialogView.findViewById(R.id.buttonDelete);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
 
-        // Set the title and message for the dialog
-        builder.setTitle("Delete or Restore")
-                .setMessage("Do you want to delete or restore this note?");
+        AlertDialog dialog = builder.create();
 
-        builder.setPositiveButton("Restore", (dialog, which) -> {
+        buttonRestore.setOnClickListener(view -> {
             note.setModifiedDate(note.getCurrentDate());
             note.setDeleted(false);
 
             // Use AsyncTask to update the note in the background
             new UpdateNoteAsync(note).execute();
+
+            dialog.dismiss();
         });
 
-        builder.setNegativeButton("Delete", (dialog, which) -> {
+        buttonDelete.setOnClickListener(view -> {
             File file = new File(note.getEncryptedFilePath());
             file.delete();
             new DeleteNoteAsync(note, this).execute();
+
+            dialog.dismiss();
         });
 
-        AlertDialog dialog = builder.create();
         dialog.show();
     }
 }
