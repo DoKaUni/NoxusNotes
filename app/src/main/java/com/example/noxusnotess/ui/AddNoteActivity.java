@@ -1,10 +1,13 @@
 package com.example.noxusnotess.ui;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -76,12 +79,29 @@ public class AddNoteActivity extends AppCompatActivity {
         if (selectedStart != -1 && selectedEnd != -1) {
             SpannableString spannable = new SpannableString(editTextNoteContent.getText());
 
-            if (colourIndex > highlightColors.length) {
+            if (colourIndex >= highlightColors.length - 1) {
                 colourIndex = 0;
-            } else
+            } else {
                 colourIndex++;
+            }
 
-            BackgroundColorSpan backgroundColorSpan = new BackgroundColorSpan(highlightColors[colourIndex]);
+            int backgroundColor = highlightColors[colourIndex];
+
+            int foregroundColor;
+            if (colourIndex > 0 && colourIndex < 6 || colourIndex == 7) {
+                foregroundColor = Color.BLACK;
+            } else{
+                foregroundColor = Color.WHITE;
+            }
+
+            TextAppearanceSpan textAppearanceSpan = new TextAppearanceSpan(null, 0, 0, new ColorStateList(
+                    new int[][]{new int[]{}},
+                    new int[]{foregroundColor}
+            ), null);
+
+            BackgroundColorSpan backgroundColorSpan = new BackgroundColorSpan(backgroundColor);
+
+            spannable.setSpan(textAppearanceSpan, selectedStart, selectedEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannable.setSpan(backgroundColorSpan, selectedStart, selectedEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             editTextNoteContent.setText(spannable);
         }
