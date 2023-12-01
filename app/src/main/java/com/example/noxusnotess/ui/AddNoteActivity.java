@@ -16,8 +16,6 @@ import com.example.noxusnotess.R;
 import com.example.noxusnotess.utils.CryptoUtils;
 import com.example.noxusnotess.utils.StorageUtils;
 
-import java.io.File;
-
 public class AddNoteActivity extends AppCompatActivity {
 
     private AppCompatEditText editTextNoteTitle;
@@ -93,6 +91,9 @@ public class AddNoteActivity extends AppCompatActivity {
         String title = editTextNoteTitle.getText().toString();
         String content = editTextNoteContent.getText().toString();
 
+        if(title.isEmpty())
+            title = "Unnamed note";
+
         Note newNote = new Note(title);
 
         // Show the password dialog and wait for the result
@@ -139,45 +140,53 @@ public class AddNoteActivity extends AppCompatActivity {
     }
 
     private void showPasswordDialog(PasswordDialogCallback callback) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_password, null);
 
-        builder.setTitle("Set Password")
-                .setMessage("Do you want to set a password for this note?")
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    showEnterPasswordDialog(callback);
-                })
-                .setNegativeButton("No", (dialog, which) -> {
-                    dialog.dismiss();
-                    callback.onPasswordResult(false);
-                });
+        Button buttonPositive = dialogView.findViewById(R.id.buttonPositive);
+        Button buttonNegative = dialogView.findViewById(R.id.buttonNegative);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
 
         AlertDialog dialog = builder.create();
+
+        buttonPositive.setOnClickListener(view -> {
+            showEnterPasswordDialog(callback);
+            dialog.dismiss();
+        });
+
+        buttonNegative.setOnClickListener(view -> {
+            dialog.dismiss();
+            callback.onPasswordResult(false);
+        });
+
         dialog.show();
     }
 
     private void showEnterPasswordDialog(PasswordDialogCallback callback) {
-        // Use a custom layout for the dialog
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_enter_password, null);
 
+        Button buttonCancel = dialogView.findViewById(R.id.buttonCancel);
+        Button buttonEnter = dialogView.findViewById(R.id.buttonEnter);
         AppCompatEditText editTextPassword = dialogView.findViewById(R.id.editTextPassword);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(dialogView)
-                .setTitle("Enter Password")
-                .setPositiveButton("OK", (dialog, which) -> {
-                    // Retrieve the entered password
-                    password = editTextPassword.getText().toString();
-                    isPasswordLocked = true;
-                    dialog.dismiss();  // Dismiss the dialog before finishing the activity
-                    callback.onPasswordResult(true);
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> {
-                    // User canceled, don't set a password
-                    dialog.dismiss();
-                    callback.onPasswordResult(false);
-                });
+        builder.setView(dialogView);
 
         AlertDialog dialog = builder.create();
+
+        buttonEnter.setOnClickListener(view -> {
+            password = editTextPassword.getText().toString();
+            isPasswordLocked = true;
+            dialog.dismiss();  // Dismiss the dialog before finishing the activity
+            callback.onPasswordResult(true);
+        });
+
+        buttonCancel.setOnClickListener(view -> {
+            dialog.dismiss();
+            callback.onPasswordResult(false);
+        });
+
         dialog.show();
     }
 

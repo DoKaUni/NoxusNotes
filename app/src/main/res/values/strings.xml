@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">NoxusNotess</string>
+    <string name="save_note">Save Note</string>
+    <string name="delete_note">Delete Note</string>
+    <string name="highlight_text">Highlight Text</string>
+    <string name="dialog_password">Would you like to set a password for this note?</string>
+    <string name="dialog_password_yes">Yes</string>
+    <string name="dialog_password_no">No</string>
+    <string name="dialog_enter_password">Enter your password</string>
+    <string name="dialog_enter_password_cancel">Cancel</string>
+    <string name="dialog_enter_password_enter">Enter</string>
 </resources>

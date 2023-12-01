@@ -73,19 +73,17 @@ public class MainActivity extends AppCompatActivity implements LoadNotesAsync.As
     }
 
     private void showPasswordDialog(Note note) {
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_enter_password, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        // Set the title and message for the dialog
-        builder.setTitle("Enter Password")
-                .setMessage("This note is password-locked. Enter the password to unlock.");
-
-        // Use a custom layout for the dialog
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_enter_password, null);
+        Button buttonEnter = dialogView.findViewById(R.id.buttonEnter);
+        Button buttonCancel = dialogView.findViewById(R.id.buttonCancel);
         AppCompatEditText editTextPassword = dialogView.findViewById(R.id.editTextPassword);
-        builder.setView(dialogView);
 
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            // Retrieve the entered password
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+
+        buttonEnter.setOnClickListener(view -> {
             String enteredPassword = editTextPassword.getText().toString();
 
             // Check if the entered password is correct
@@ -97,14 +95,14 @@ public class MainActivity extends AppCompatActivity implements LoadNotesAsync.As
                 // If the password is incorrect, show a message (you can customize this)
                 Toast.makeText(MainActivity.this, "Incorrect password", Toast.LENGTH_SHORT).show();
             }
-        });
 
-        builder.setNegativeButton("Cancel", (dialog, which) -> {
-            // User canceled, do nothing
             dialog.dismiss();
         });
 
-        AlertDialog dialog = builder.create();
+        buttonCancel.setOnClickListener(view -> {
+            dialog.dismiss();
+        });
+
         dialog.show();
     }
 

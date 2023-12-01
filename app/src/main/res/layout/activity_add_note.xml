@@ -34,20 +34,20 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Save Note" />
+            android:text="@string/save_note" />
 
         <Button
             android:id="@+id/buttonDeleteNote"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Delete Note" />
+            android:text="@string/delete_note" />
 
         <Button
             android:id="@+id/buttonHighlightText"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Highlight Text" />
+            android:text="@string/highlight_text" />
     </LinearLayout>
 </LinearLayout>
